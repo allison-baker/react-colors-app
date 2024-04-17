@@ -11,7 +11,13 @@ export default function useFetch(url) {
             setError(null)
 
             try {
-                const res = await fetch(url)
+                const res = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*',
+                    }
+                })
                 if (!res.ok) {
                     throw new Error(`An error occured: ${res.statusText}`)
                 }
