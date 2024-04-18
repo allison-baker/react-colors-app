@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 
-export default function useFetch(url) {
+export default function useFetch(type, search) {
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(null)
+
+    const url = `/.netlify/functions/getData?type=${type}&search=${search}`
 
     useEffect(() => {
         async function fetchData() {
@@ -11,13 +13,7 @@ export default function useFetch(url) {
             setError(null)
 
             try {
-                const res = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json;charset=utf-8',
-                        'Access-Control-Allow-Origin': '*',
-                    }
-                })
+                const res = await fetch(url)
                 if (!res.ok) {
                     throw new Error(`An error occured: ${res.statusText}`)
                 }

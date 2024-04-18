@@ -1,39 +1,21 @@
-import { useEffect, useState } from 'react'
+/* eslint-disable no-unused-vars */
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import InnerSearch from '../components/InnerSearch'
+import useFetch from '../useFetch'
 
 function Search() {
 	const selection = useParams().type
 	const [detailed, setDetailed] = useState(false)
 	const [searchType, setSearchType] = useState('')
 
-	let fullUrl = `https://www.colourlovers.com/api/${selection}/`
-	if (searchType) fullUrl += `${searchType}/`
-
 	const [parameters, setParameters] = useState([])
-	parameters.forEach((param) => {
-		fullUrl += `&${param.name}=${param.value}`
-	})
+	// parameters.forEach((param) => {
+	// 	fullUrl += `&${param.name}=${param.value}`
+	// })
 
-	fullUrl += parameters.length > 0 ? `&format=json` : `?format=json`
-
-	const [data, setData] = useState([])
-	useEffect(() => {
-		fetch(fullUrl, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json;charset=utf-8',
-				'Access-Control-Allow-Origin': 'http://127.0.0.1:5173',
-			},
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				setData(data)
-				setSearchType('')
-				setParameters([])
-			})
-			.catch((error) => console.error(error.message))
-	}, [fullUrl])
+	const { data, loading, error } = useFetch(selection, searchType)
+	console.log(data)
 
 	return (
 		<>
@@ -71,9 +53,13 @@ function Search() {
 					</div>
 					{detailed ? <InnerSearch selection={selection} setParameters={setParameters} /> : ''}
 				</section>
-				{data.map((item) => {
-					return <img src={item.imageUrl} alt={item.title} key={item.id} />
-				})}
+				{loading ? <p>Loading...</p> : (
+					<div className='flex flex-row flex-wrap gap-6 max-w-[500px] items-center justify-evenly py-8'>
+						{data.map((item) => {
+							return <img src={item.imageUrl} alt={item.title} key={item.id} />
+						})}
+					</div>
+				)}
 			</div>
 		</>
 	)
