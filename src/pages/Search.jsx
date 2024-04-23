@@ -8,18 +8,14 @@ function Search() {
 	const selection = useParams().type
 	const [detailed, setDetailed] = useState(false)
 	const [searchType, setSearchType] = useState('')
+	const [parameters, setParameters] = useState()
 
-	const [parameters, setParameters] = useState([])
-	// parameters.forEach((param) => {
-	// 	fullUrl += `&${param.name}=${param.value}`
-	// })
-
-	const { data, loading, error } = useFetch(selection, searchType)
+	const { data, loading } = useFetch(selection, searchType, parameters)
 	console.log(data)
 
 	return (
 		<>
-			<div className='flex flex-col items-center'>
+			<div className='flex flex-col items-center min-h-[70vh]'>
 				<h1 className='text-2xl text-center py-6 capitalize'>Search {selection}</h1>
 				<section className='flex flex-col items-center gap-4 py-6'>
 					<div className='flex flex-row items-center gap-4'>
@@ -51,12 +47,16 @@ function Search() {
 							<img src={detailed ? '/caret-up-solid.svg' : '/caret-down-solid.svg'} width='10' height='10' />
 						</button>
 					</div>
-					{detailed ? <InnerSearch selection={selection} setParameters={setParameters} /> : ''}
+					{detailed ? <InnerSearch selection={selection} setParameters={setParameters} setSearchType={setSearchType} /> : ''}
 				</section>
 				{loading ? <p>Loading...</p> : (
 					<div className='flex flex-row flex-wrap gap-6 max-w-[500px] items-center justify-evenly py-8'>
 						{data.map((item) => {
-							return <img src={item.imageUrl} alt={item.title} key={item.id} />
+							return (
+								<button key={item.id} onClick={() => console.log(item)}>
+									<img src={item.imageUrl} alt={item.title} />
+								</button>
+							)
 						})}
 					</div>
 				)}

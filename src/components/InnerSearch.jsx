@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 
-function InnerSearch({ selection, setParameters }) {
+function InnerSearch({ selection, setParameters, setSearchType }) {
 	const [hue1, setHue1] = useState('')
 	const [hue2, setHue2] = useState('')
 	const [bright1, setBright1] = useState('')
@@ -10,21 +10,32 @@ function InnerSearch({ selection, setParameters }) {
 
 	function handleSubmit(e) {
 		e.preventDefault()
-		const params = [
-			{
+		setSearchType('')
+		let params = []
+		if (hue1) {
+			params.push({
 				name: 'hueRange',
-				value: `${hue1},${hue2}`,
-			},
-			{
+				value: `${hue1},${hue2 ? hue2 : '359'}`,
+			})
+		}
+		if (bright1) {
+			params.push({
 				name: 'briRange',
-				value: `${bright1},${bright2}`,
-			},
-			{
+				value: `${bright1},${bright2 ? bright2 : '99'}`,
+			})
+		}
+		if (searchTerm) {
+			params.push({
 				name: 'keywords',
 				value: searchTerm,
-			},
-		]
+			})
+		}
 		setParameters(params)
+		setHue1('')
+		setHue2('')
+		setBright1('')
+		setBright2('')
+		setSearchTerm('')
 	}
 
 	if (selection === 'colors') {
@@ -38,8 +49,8 @@ function InnerSearch({ selection, setParameters }) {
 							type='range'
 							id='hue1'
 							name='hue1'
-							min='1'
-							max='359'
+							min='0'
+							max='358'
 							value={hue1}
 							onChange={(e) => setHue1(String(e.target.value))}
 						/>
@@ -64,7 +75,7 @@ function InnerSearch({ selection, setParameters }) {
 							type='range'
 							id='bright1'
 							name='bright1'
-							min='1'
+							min='0'
 							max='98'
 							value={bright1}
 							onChange={(e) => setBright1(String(e.target.value))}
@@ -78,7 +89,7 @@ function InnerSearch({ selection, setParameters }) {
 							id='bright2'
 							name='bright2'
 							min='1'
-							max='98'
+							max='99'
 							value={bright2}
 							onChange={(e) => setBright2(String(e.target.value))}
 						/>
@@ -114,8 +125,9 @@ function InnerSearch({ selection, setParameters }) {
 }
 
 InnerSearch.propTypes = {
-	selection: PropTypes.string,
+	selection: PropTypes.string.isRequired,
 	setParameters: PropTypes.func,
+	setSearchType: PropTypes.func.isRequired
 }
 
 export default InnerSearch

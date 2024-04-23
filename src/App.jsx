@@ -1,7 +1,9 @@
 import './App.css'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 
 function App() {
+	const path = useLocation().pathname
+
 	return (
 		<>
 			<nav className='flex flex-row items-center justify-between'>
@@ -15,7 +17,7 @@ function App() {
 					<li>
 						<a
 							href='/search/colors'
-							className='block px-8 py-10 uppercase tracking-widest font-bold hover:text-primary-content hover:bg-primary text-primary hover:rounded-full'
+							className='block border-b-4 border-base-100 px-8 py-10 uppercase tracking-widest font-bold text-primary hover:border-primary'
 						>
 							Colors
 						</a>
@@ -23,7 +25,7 @@ function App() {
 					<li>
 						<a
 							href='/search/palettes'
-							className='block px-8 py-10 uppercase tracking-widest font-bold hover:text-secondary-content hover:bg-secondary text-secondary hover:rounded-full'
+							className='block border-b-4 border-base-100 px-8 py-10 uppercase tracking-widest font-bold text-secondary hover:border-secondary'
 						>
 							Palettes
 						</a>
@@ -31,7 +33,7 @@ function App() {
 					<li>
 						<a
 							href='/search/patterns'
-							className='block px-8 py-10 uppercase tracking-widest font-bold hover:text-success-content hover:bg-success text-success hover:rounded-full'
+							className='block border-b-4 border-base-100 px-8 py-10 uppercase tracking-widest font-bold text-success hover:border-success'
 						>
 							Patterns
 						</a>
@@ -39,14 +41,44 @@ function App() {
 					<li>
 						<a
 							href='/favorites'
-							className='block px-8 py-10 uppercase tracking-widest font-bold hover:text-warning-content hover:bg-warning text-warning hover:rounded-full'
+							className='block border-b-4 border-base-100 px-8 py-10 uppercase tracking-widest font-bold text-warning hover:border-warning'
 						>
 							Favorites
 						</a>
 					</li>
 				</ul>
 			</nav>
-			<Outlet />
+			{path === '/' ? (
+				<>
+					<div className='min-h-[70vh] flex flex-col items-center justify-center'>
+						<h1 className='text-3xl'>Welcome to Paletter</h1>
+						<p className='mt-8'>Search by color, palette, or pattern! Save your favorites to view later.</p>
+						<p className='mt-2'>
+							Powered by the{' '}
+							<a href='https://www.colourlovers.com/api' target='_blank'>
+								COLOURlovers API
+							</a>
+							.
+						</p>
+						<section className='flex flex-row items-center mt-10 gap-4'>
+							<a className='btn rounded-full btn-primary' href='/search/colors'>
+								Search by Color
+							</a>
+							<a className='btn rounded-full btn-secondary' href='/search/palettes'>
+								Search by Palette
+							</a>
+							<a className='btn rounded-full btn-success' href='/search/patterns'>
+								Search by Pattern
+							</a>
+						</section>
+					</div>
+				</>
+			) : (
+				<Outlet />
+			)}
+			<footer>
+				<p className='text-center text-sm py-8'>Al Baker &bull; &copy; 2024 &bull; Utah Valley University</p>
+			</footer>
 		</>
 	)
 }
