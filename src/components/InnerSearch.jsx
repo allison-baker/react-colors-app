@@ -8,7 +8,7 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 	const [bright2, setBright2] = useState('')
 	const [searchTerm, setSearchTerm] = useState('')
 
-	function handleSubmit(e) {
+	function handleColorSubmit(e) {
 		e.preventDefault()
 		setSearchType('')
 		let params = []
@@ -36,6 +36,56 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 		setBright1('')
 		setBright2('')
 		setSearchTerm('')
+	}
+
+	let [hues, setHues] = useState({
+		red: false,
+		orange: false,
+		yellow: false,
+		green: false,
+		aqua: false,
+		blue: false,
+		purple: false,
+		fuchsia: false,
+	})
+	const [hex, setHex] = useState('')
+	const [hexValues, setHexValues] = useState([])
+
+	function handlePaletteSubmit(e) {
+		e.preventDefault()
+		setSearchType('')
+		let params = []
+		let hueValues = []
+		Object.keys(hues).forEach((key) => {
+			if (hues[key]) {
+				hueValues.push(key)
+			}
+		})
+		if (hueValues.length > 0) {
+			params.push({
+				name: 'hueOption',
+				value: hueValues.join(','),
+			})
+		}
+		if (hexValues.length > 0) {
+			params.push({
+				name: 'hex',
+				value: hexValues.join(','),
+			})
+		}
+		console.log(params)
+		setParameters(params)
+		setHues({
+			red: false,
+			orange: false,
+			yellow: false,
+			green: false,
+			aqua: false,
+			blue: false,
+			purple: false,
+			fuchsia: false,
+		})
+		setHexValues([])
 	}
 
 	if (selection === 'colors') {
@@ -94,7 +144,8 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 							onChange={(e) => setBright2(String(e.target.value))}
 						/>
 					</label>
-					<label htmlFor='searchTerm' className='block text-sm font-bold mb-4 text-center'>Search Term
+					<label htmlFor='searchTerm' className='block text-sm font-bold mb-4 text-center'>
+						Search Term
 						<input
 							className='block input input-primary rounded-full input-sm mt-2 w-full font-normal text-base'
 							type='text'
@@ -105,14 +156,134 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 							onChange={(e) => setSearchTerm(e.target.value)}
 						/>
 					</label>
-					<input className='btn btn-primary rounded-full w-full btn-sm mt-2' type='submit' value='Search Colors' onClick={handleSubmit} />
+					<input className='btn btn-primary rounded-full w-full btn-sm mt-2' type='submit' value='Search Colors' onClick={handleColorSubmit} />
 				</form>
 			</>
 		)
 	} else if (selection === 'palettes') {
 		return (
 			<>
-				<p>Palettes search coming soon</p>
+				<form>
+					<fieldset>
+						<legend className='text-sm font-bold text-center mb-2'>Hues</legend>
+						<div className='grid grid-cols-2 mb-2'>
+							<label htmlFor='red' className='mb-4 text-center flex items-center gap-2'>
+								<input
+									id='red'
+									checked={hues.red}
+									name='red'
+									type='checkbox'
+									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									onChange={(e) => setHues({ ...hues, red: e.target.checked })}
+								/>
+								Red
+							</label>
+							<label htmlFor='orange' className='mb-4 text-center flex items-center gap-2'>
+								<input
+									id='orange'
+									checked={hues.orange}
+									name='orange'
+									type='checkbox'
+									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									onChange={(e) => setHues({ ...hues, orange: e.target.checked })}
+								/>
+								Orange
+							</label>
+							<label htmlFor='yellow' className='mb-4 text-center flex items-center gap-2'>
+								<input
+									id='yellow'
+									checked={hues.yellow}
+									name='yellow'
+									type='checkbox'
+									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									onChange={(e) => setHues({ ...hues, yellow: e.target.checked })}
+								/>
+								Yellow
+							</label>
+							<label htmlFor='green' className='mb-4 text-center flex items-center gap-2'>
+								<input
+									id='green'
+									checked={hues.green}
+									name='green'
+									type='checkbox'
+									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									onChange={(e) => setHues({ ...hues, green: e.target.checked })}
+								/>
+								Green
+							</label>
+							<label htmlFor='aqua' className='mb-4 text-center flex items-center gap-2'>
+								<input
+									id='aqua'
+									checked={hues.aqua}
+									name='aqua'
+									type='checkbox'
+									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									onChange={(e) => setHues({ ...hues, aqua: e.target.checked })}
+								/>
+								Aqua
+							</label>
+							<label htmlFor='blue' className='mb-4 text-center flex items-center gap-2'>
+								<input
+									id='blue'
+									checked={hues.blue}
+									name='blue'
+									type='checkbox'
+									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									onChange={(e) => setHues({ ...hues, blue: e.target.checked })}
+								/>
+								Blue
+							</label>
+							<label htmlFor='purple' className='mb-4 text-center flex items-center gap-2'>
+								<input
+									id='purple'
+									checked={hues.purple}
+									name='purple'
+									type='checkbox'
+									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									onChange={(e) => setHues({ ...hues, purple: e.target.checked })}
+								/>
+								Purple
+							</label>
+							<label htmlFor='fuchsia' className='mb-4 text-center flex items-center gap-2'>
+								<input
+									id='fuchsia'
+									checked={hues.fuchsia}
+									name='fuchsia'
+									type='checkbox'
+									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									onChange={(e) => setHues({ ...hues, fuchsia: e.target.checked })}
+								/>
+								Fuchsia
+							</label>
+						</div>
+					</fieldset>
+					<label className='block text-sm font-bold mb-2 text-center'>
+						Hex Values
+						<input
+							className='block input input-secondary rounded-full input-sm mt-2 w-full font-normal text-base'
+							type='text'
+							value={hex}
+							placeholder='Search Term'
+							onChange={(e) => setHex(e.target.value)}
+						/>
+						<button
+							className='btn btn-sm rounded-full w-full mt-2'
+							onClick={(e) => {
+								e.preventDefault()
+								setHexValues([...hexValues, hex])
+								setHex('')
+							}}
+						>
+							Save
+						</button>
+					</label>
+					<div className='grid grid-cols-2 mb-2'>
+						{hexValues.map((hex, index) => {
+							return <p key={index}>{hex}</p>
+						})}
+					</div>
+					<input type='submit' value='Search Palettes' className='btn btn-secondary rounded-full w-full btn-sm mt-2' onClick={handlePaletteSubmit} />
+				</form>
 			</>
 		)
 	} else if (selection === 'patterns') {
@@ -127,7 +298,7 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 InnerSearch.propTypes = {
 	selection: PropTypes.string.isRequired,
 	setParameters: PropTypes.func,
-	setSearchType: PropTypes.func.isRequired
+	setSearchType: PropTypes.func.isRequired,
 }
 
 export default InnerSearch

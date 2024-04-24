@@ -9,9 +9,10 @@ function Search() {
 	const [detailed, setDetailed] = useState(false)
 	const [searchType, setSearchType] = useState('')
 	const [parameters, setParameters] = useState()
+	const [offset, setOffset] = useState(0)
 
-	const { data, loading } = useFetch(selection, searchType, parameters)
-	console.log(data)
+	// const { data, loading } = useFetch(selection, searchType, parameters, offset)
+	// console.log(data)
 
 	return (
 		<>
@@ -49,17 +50,25 @@ function Search() {
 					</div>
 					{detailed ? <InnerSearch selection={selection} setParameters={setParameters} setSearchType={setSearchType} /> : ''}
 				</section>
-				{loading ? <p>Loading...</p> : (
-					<div className='flex flex-row flex-wrap gap-6 max-w-[500px] items-center justify-evenly py-8'>
-						{data.map((item) => {
-							return (
-								<button key={item.id} onClick={() => console.log(item)}>
-									<img src={item.imageUrl} alt={item.title} />
-								</button>
-							)
-						})}
-					</div>
-				)}
+				{/*loading ? (
+					<p>Loading...</p>
+				) : (
+					<>
+						<div className='flex flex-row flex-wrap gap-6 max-w-[500px] items-center justify-evenly py-8'>
+							{data.map((item) => {
+								return (
+									<button key={item.id} onClick={() => console.log(item)}>
+										<img src={item.imageUrl} alt={item.title} />
+									</button>
+								)
+							})}
+						</div>
+						<section className='flex flex-row items-center justify-between w-full max-w-[500px]'>
+							<button className='btn btn-sm' disabled={offset === 0} onClick={() => setOffset(offset - 1)}>Previous</button>
+							<button className='btn btn-sm' onClick={() => setOffset(offset + 1)}>Next</button>
+						</section>
+					</>
+				)*/}
 			</div>
 		</>
 	)

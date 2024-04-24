@@ -17,7 +17,11 @@ function App() {
 					<li>
 						<a
 							href='/search/colors'
-							className='block border-b-4 border-base-100 px-8 py-10 uppercase tracking-widest font-bold text-primary hover:border-primary'
+							className={
+								path === '/search/colors'
+									? 'block border-b-4 border-primary px-8 py-10 uppercase tracking-widest font-bold text-primary'
+									: 'block border-b-4 border-base-100 px-8 py-10 uppercase tracking-widest font-bold text-primary hover:border-primary'
+							}
 						>
 							Colors
 						</a>
@@ -25,7 +29,11 @@ function App() {
 					<li>
 						<a
 							href='/search/palettes'
-							className='block border-b-4 border-base-100 px-8 py-10 uppercase tracking-widest font-bold text-secondary hover:border-secondary'
+							className={
+								path === '/search/palettes'
+									? 'block border-b-4 border-secondary px-8 py-10 uppercase tracking-widest font-bold text-secondary'
+									: 'block border-b-4 border-base-100 px-8 py-10 uppercase tracking-widest font-bold text-secondary hover:border-secondary'
+							}
 						>
 							Palettes
 						</a>
@@ -33,7 +41,11 @@ function App() {
 					<li>
 						<a
 							href='/search/patterns'
-							className='block border-b-4 border-base-100 px-8 py-10 uppercase tracking-widest font-bold text-success hover:border-success'
+							className={
+								path === '/search/patterns'
+									? 'block border-b-4 border-success px-8 py-10 uppercase tracking-widest font-bold text-success'
+									: 'block border-b-4 border-base-100 px-8 py-10 uppercase tracking-widest font-bold text-success hover:border-success'
+							}
 						>
 							Patterns
 						</a>
@@ -41,7 +53,11 @@ function App() {
 					<li>
 						<a
 							href='/favorites'
-							className='block border-b-4 border-base-100 px-8 py-10 uppercase tracking-widest font-bold text-warning hover:border-warning'
+							className={
+								path === '/favorites'
+									? 'block border-b-4 border-warning px-8 py-10 uppercase tracking-widest font-bold text-warning'
+									: 'block border-b-4 border-base-100 px-8 py-10 uppercase tracking-widest font-bold text-warning hover:border-warning'
+							}
 						>
 							Favorites
 						</a>

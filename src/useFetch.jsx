@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 
-export default function useFetch(type, search, parameters) {
+export default function useFetch(type, search, parameters, offset) {
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
 
-    let url = `/.netlify/functions/getData?type=${type}&search=${search}`
+    let url = `/.netlify/functions/getData?type=${type}&search=${search}&resultOffset=${offset}`
     if (parameters) {
         parameters.forEach((param) => {
             url += `&${param.name}=${param.value}`
