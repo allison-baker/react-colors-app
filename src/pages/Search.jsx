@@ -11,8 +11,8 @@ function Search() {
 	const [parameters, setParameters] = useState()
 	const [offset, setOffset] = useState(0)
 
-	// const { data, loading } = useFetch(selection, searchType, parameters, offset)
-	// console.log(data)
+	const { data, loading, error } = useFetch(selection, searchType, parameters, offset)
+	console.log(data)
 
 	return (
 		<>
@@ -50,10 +50,11 @@ function Search() {
 					</div>
 					{detailed ? <InnerSearch selection={selection} setParameters={setParameters} setSearchType={setSearchType} /> : ''}
 				</section>
-				{/*loading ? (
-					<p>Loading...</p>
-				) : (
+				{loading ? (
+					<p className='py-6'>Loading...</p>
+				) : data ? (
 					<>
+						<h2 className='pt-6'>Search Results</h2>
 						<div className='flex flex-row flex-wrap gap-6 max-w-[500px] items-center justify-evenly py-8'>
 							{data.map((item) => {
 								return (
@@ -64,11 +65,18 @@ function Search() {
 							})}
 						</div>
 						<section className='flex flex-row items-center justify-between w-full max-w-[500px]'>
-							<button className='btn btn-sm' disabled={offset === 0} onClick={() => setOffset(offset - 1)}>Previous</button>
-							<button className='btn btn-sm' onClick={() => setOffset(offset + 1)}>Next</button>
+							<button className='btn btn-sm' disabled={offset === 0} onClick={() => setOffset(offset - 1)}>
+								Previous
+							</button>
+							<button className='btn btn-sm' onClick={() => setOffset(offset + 1)}>
+								Next
+							</button>
 						</section>
+						<p className='font-bold text-sm text-center my-4'>{error ? error : 'Displaying Your Search Results'}</p>
 					</>
-				)*/}
+				) : (
+					<p className='py-6'>Sorry, no results could be found. The COLOURlovers API may be down, please try again later.</p>
+				)}
 			</div>
 		</>
 	)

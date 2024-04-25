@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 export default function useFetch(type, search, parameters, offset) {
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
     let url = `/.netlify/functions/getData?type=${type}&search=${search}&resultOffset=${offset}`
     if (parameters) {
@@ -14,6 +15,7 @@ export default function useFetch(type, search, parameters, offset) {
     useEffect(() => {
         async function fetchData() {
             setLoading(true)
+            setError(null)
 
             try {
                 const res = await fetch(url)
@@ -24,7 +26,7 @@ export default function useFetch(type, search, parameters, offset) {
                 const jsonData = await res.json()
                 setData(jsonData)
             } catch (error) {
-                console.error(error.message)
+                setError(error.message)
             } finally {
                 setLoading(false)
             }
@@ -33,5 +35,5 @@ export default function useFetch(type, search, parameters, offset) {
         fetchData()
     }, [url])
 
-    return {data, loading}
+    return {data, loading, error}
 }

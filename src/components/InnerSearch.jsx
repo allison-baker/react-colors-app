@@ -50,6 +50,7 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 	})
 	const [hex, setHex] = useState('')
 	const [hexValues, setHexValues] = useState([])
+	const [logic, setLogic] = useState('AND')
 
 	function handlePaletteSubmit(e) {
 		e.preventDefault()
@@ -73,6 +74,10 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 				value: hexValues.join(','),
 			})
 		}
+		params.push({
+			name: 'hex_logic',
+			value: logic
+		})
 		console.log(params)
 		setParameters(params)
 		setHues({
@@ -86,6 +91,7 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 			fuchsia: false,
 		})
 		setHexValues([])
+		setLogic('AND')
 	}
 
 	if (selection === 'colors') {
@@ -160,7 +166,7 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 				</form>
 			</>
 		)
-	} else if (selection === 'palettes') {
+	} else if (selection === 'palettes' || selection) {
 		return (
 			<>
 				<form>
@@ -173,7 +179,11 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 									checked={hues.red}
 									name='red'
 									type='checkbox'
-									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									className={
+										selection === 'palettes'
+											? 'checkbox checkbox-sm checkbox-secondary'
+											: 'checkbox checkbox-sm checkbox-success'
+									}
 									onChange={(e) => setHues({ ...hues, red: e.target.checked })}
 								/>
 								Red
@@ -184,7 +194,11 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 									checked={hues.orange}
 									name='orange'
 									type='checkbox'
-									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									className={
+										selection === 'palettes'
+											? 'checkbox checkbox-sm checkbox-secondary'
+											: 'checkbox checkbox-sm checkbox-success'
+									}
 									onChange={(e) => setHues({ ...hues, orange: e.target.checked })}
 								/>
 								Orange
@@ -195,7 +209,11 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 									checked={hues.yellow}
 									name='yellow'
 									type='checkbox'
-									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									className={
+										selection === 'palettes'
+											? 'checkbox checkbox-sm checkbox-secondary'
+											: 'checkbox checkbox-sm checkbox-success'
+									}
 									onChange={(e) => setHues({ ...hues, yellow: e.target.checked })}
 								/>
 								Yellow
@@ -206,7 +224,11 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 									checked={hues.green}
 									name='green'
 									type='checkbox'
-									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									className={
+										selection === 'palettes'
+											? 'checkbox checkbox-sm checkbox-secondary'
+											: 'checkbox checkbox-sm checkbox-success'
+									}
 									onChange={(e) => setHues({ ...hues, green: e.target.checked })}
 								/>
 								Green
@@ -217,7 +239,11 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 									checked={hues.aqua}
 									name='aqua'
 									type='checkbox'
-									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									className={
+										selection === 'palettes'
+											? 'checkbox checkbox-sm checkbox-secondary'
+											: 'checkbox checkbox-sm checkbox-success'
+									}
 									onChange={(e) => setHues({ ...hues, aqua: e.target.checked })}
 								/>
 								Aqua
@@ -228,7 +254,11 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 									checked={hues.blue}
 									name='blue'
 									type='checkbox'
-									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									className={
+										selection === 'palettes'
+											? 'checkbox checkbox-sm checkbox-secondary'
+											: 'checkbox checkbox-sm checkbox-success'
+									}
 									onChange={(e) => setHues({ ...hues, blue: e.target.checked })}
 								/>
 								Blue
@@ -239,7 +269,11 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 									checked={hues.purple}
 									name='purple'
 									type='checkbox'
-									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									className={
+										selection === 'palettes'
+											? 'checkbox checkbox-sm checkbox-secondary'
+											: 'checkbox checkbox-sm checkbox-success'
+									}
 									onChange={(e) => setHues({ ...hues, purple: e.target.checked })}
 								/>
 								Purple
@@ -250,7 +284,11 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 									checked={hues.fuchsia}
 									name='fuchsia'
 									type='checkbox'
-									className='checkbox checkbox-xs checkbox-secondary rounded-full'
+									className={
+										selection === 'palettes'
+											? 'checkbox checkbox-sm checkbox-secondary'
+											: 'checkbox checkbox-sm checkbox-success'
+									}
 									onChange={(e) => setHues({ ...hues, fuchsia: e.target.checked })}
 								/>
 								Fuchsia
@@ -260,14 +298,18 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 					<label className='block text-sm font-bold mb-2 text-center'>
 						Hex Values
 						<input
-							className='block input input-secondary rounded-full input-sm mt-2 w-full font-normal text-base'
+							className={
+								selection === 'palettes'
+									? 'block input input-secondary rounded-full input-sm mt-2 w-full font-normal text-base'
+									: 'block input input-success rounded-full input-sm mt-2 w-full font-normal text-base'
+							}
 							type='text'
 							value={hex}
 							placeholder='Search Term'
 							onChange={(e) => setHex(e.target.value)}
 						/>
 						<button
-							className='btn btn-sm rounded-full w-full mt-2'
+							className='btn btn-sm rounded-full w-full my-2'
 							onClick={(e) => {
 								e.preventDefault()
 								setHexValues([...hexValues, hex])
@@ -282,14 +324,24 @@ function InnerSearch({ selection, setParameters, setSearchType }) {
 							return <p key={index}>{hex}</p>
 						})}
 					</div>
-					<input type='submit' value='Search Palettes' className='btn btn-secondary rounded-full w-full btn-sm mt-2' onClick={handlePaletteSubmit} />
+					<fieldset>
+						<legend className='font-bold text-sm mb-2'>Must include <em>all</em> or just <em>one of</em> the hex values?</legend>
+						<label className='mx-12 text-sm font-bold text-center' htmlFor='and'>
+							<input type='radio' id='and' name='logicType' value='AND' defaultChecked onChange={() => setLogic('AND') } /> All
+						</label>
+						<label className='mx-12 text-sm font-bold text-center' htmlFor='or'>
+							<input type='radio' id='or' name='logicType' value='OR' onChange={() => setLogic('OR') }/> One of
+						</label>
+					</fieldset>
+					<input
+						type='submit'
+						value={selection === 'palettes' ? 'Search Palettes' : 'Search Patterns' }
+						className={
+							selection === 'palettes' ? 'btn btn-secondary rounded-full w-full btn-sm mt-4' : 'btn btn-success rounded-full w-full btn-sm mt-4'
+						}
+						onClick={handlePaletteSubmit}
+					/>
 				</form>
-			</>
-		)
-	} else if (selection === 'patterns') {
-		return (
-			<>
-				<p>Patterns search coming soon</p>
 			</>
 		)
 	}

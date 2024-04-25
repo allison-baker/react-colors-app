@@ -9,7 +9,17 @@ export default async (req) => {
     const briRange = url.searchParams.get('briRange')
     const keywords = url.searchParams.get('keywords')
 
-    const fullURL = `http://www.colourlovers.com/api/${type}/${search}?format=json&resultOffset=${resultOffset * 20}${hueRange ? `&hueRange=${hueRange}` : ''}${briRange ? `&briRange=${briRange}` : ''}${keywords ? `&keywords=${keywords}` : ''}`
+    const hueOption = url.searchParams.get('hueOption')
+    const hex = url.searchParams.get('hex')
+    const hex_logic = url.searchParams.get('hex_logic')
+
+    const fullURL = `http://www.colourlovers.com/api/${type}/${search}?format=json&resultOffset=${resultOffset * 20}`
+        + `${hueRange ? `&hueRange=${hueRange}` : ''}`
+        + `${briRange ? `&briRange=${briRange}` : ''}`
+        + `${keywords ? `&keywords=${keywords}` : ''}`
+        + `${hueOption ? `&hueOption=${hueOption}` : ''}`
+        + `${hex ? `&hex=${hex}` : ''}`
+        + `${hex_logic ? `&hex_logic=${hex_logic}` : ''}`
     console.log(fullURL)
     try {
         const res = await fetch(fullURL)
