@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import InnerSearch from '../components/InnerSearch'
 import useFetch from '../useFetch'
 import Modal from 'react-modal'
+import AddPalette from '../components/AddPalette'
 
 Modal.setAppElement('#root')
 
@@ -14,6 +15,7 @@ function Search() {
 	const [offset, setOffset] = useState(0)
 
 	const { data, loading, error } = useFetch(selection, searchType, parameters, offset)
+	console.log(data)
 
 	const [current, setCurrent] = useState(null)
 	const [modalIsOpen, setIsOpen] = useState(false)
@@ -27,6 +29,19 @@ function Search() {
 			localStorage.setItem('favorites', JSON.stringify(favorites))
 			setIsOpen(false)
 		}
+	}
+
+	const userPalettes = JSON.parse(localStorage.getItem('palettes')) || []
+
+	function addToPalette(paletteId) {
+		const updatedPalettes = userPalettes.map((palette) => {
+            if (palette.id === Number(paletteId)) {
+                palette.colors.push(current)
+            }
+            return palette
+        })
+		localStorage.setItem('palettes', JSON.stringify(updatedPalettes))
+		setIsOpen(false)
 	}
 
 	return (
@@ -119,7 +134,23 @@ function Search() {
 											)}
 										</p>
 										<div className='flex flex-row items-center gap-4 mt-6'>
-											<button className='btn rounded-full btn-neutral' onClick={handleFavorite}>Add to Favorites</button>
+											<button className='btn rounded-full btn-neutral' onClick={handleFavorite}>
+												Add to Favorites
+											</button>
+											{selection === 'colors' ? (
+												<select className='select select-bordered rounded-full' onChange={(e) => addToPalette(e.target.value)} defaultValue=''>
+													<option disabled value=''>--Add to Palette--</option>
+													{userPalettes.map((palette) => {
+														return (
+															<option key={palette.id} value={palette.id}>
+																{palette.title}
+															</option>
+														)
+													})}
+												</select>
+											) : (
+												''
+											)}
 											<button
 												className='btn rounded-full btn-outline'
 												onClick={() => {
@@ -130,6 +161,7 @@ function Search() {
 												Close
 											</button>
 										</div>
+										{selection === 'colors' ? <AddPalette color={current} setIsOpen={setIsOpen} /> : ''}
 									</section>
 								</div>
 							</Modal>
