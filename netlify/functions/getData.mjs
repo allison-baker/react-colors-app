@@ -13,7 +13,7 @@ export default async (req) => {
     const hex = url.searchParams.get('hex')
     const hex_logic = url.searchParams.get('hex_logic')
 
-    const fullURL = `http://www.colourlovers.com/api/${type}/${search}?format=json&resultOffset=${resultOffset * 20}`
+    let fullURL = `http://www.colourlovers.com/api/${type}/${search}?format=json&resultOffset=${resultOffset * 20}`
         + `${hueRange ? `&hueRange=${hueRange}` : ''}`
         + `${briRange ? `&briRange=${briRange}` : ''}`
         + `${keywords ? `&keywords=${keywords}` : ''}`
@@ -21,6 +21,11 @@ export default async (req) => {
         + `${hex ? `&hex=${hex}` : ''}`
         + `${hex_logic ? `&hex_logic=${hex_logic}` : ''}`
     console.log(fullURL)
+
+    if (type === 'palettes' || type === 'patterns') {
+        fullURL = `https://www.colourlovers.com/api/${type}/random?format=json`
+    }
+    
     try {
         const res = await fetch(fullURL)
         const data = await res.json()
