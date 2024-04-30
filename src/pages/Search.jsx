@@ -11,8 +11,18 @@ function Search() {
 	const selection = useParams().type
 	const [detailed, setDetailed] = useState(false)
 	const [searchType, setSearchType] = useState('')
-	const [parameters, setParameters] = useState()
+	const [parameters, setParameters] = useState(null)
 	const [offset, setOffset] = useState(0)
+
+	function showSimple() {
+		setDetailed(!detailed)
+		setParameters(null)
+	}
+
+	function showDetailed() {
+		setDetailed(!detailed)
+		setSearchType('')
+	}
 
 	const { data, loading, error } = useFetch(selection, searchType, parameters, offset)
 	console.log(data)
@@ -51,7 +61,7 @@ function Search() {
 				<section className='flex flex-col items-center gap-4 py-6'>
 					<div className='flex flex-row items-center gap-4'>
 						<h2>Quick Search:</h2>
-						<button className='btn btn-xs' onClick={() => setDetailed(!detailed)}>
+						<button className='btn btn-xs' onClick={showDetailed}>
 							<img src={detailed ? '/caret-down-solid.svg' : '/caret-up-solid.svg'} width='10' height='10' />
 						</button>
 					</div>
@@ -59,13 +69,22 @@ function Search() {
 						''
 					) : (
 						<div className='flex flex-row gap-4 items-center'>
-							<button className='btn rounded-full btn-outline' onClick={() => setSearchType('random')}>
+							<button className='btn rounded-full btn-outline' onClick={() => {
+								setSearchType('random')
+								setParameters(null)
+							}}>
 								Random
 							</button>
-							<button className='btn rounded-full btn-outline' onClick={() => setSearchType('new')}>
+							<button className='btn rounded-full btn-outline' onClick={() => {
+								setSearchType('new')
+								setParameters(null)
+							}}>
 								New
 							</button>
-							<button className='btn rounded-full btn-outline' onClick={() => setSearchType('top')}>
+							<button className='btn rounded-full btn-outline' onClick={() => {
+								setSearchType('top')
+								setParameters(null)
+							}}>
 								Popular
 							</button>
 						</div>
@@ -74,7 +93,7 @@ function Search() {
 				<section className='py-6 flex flex-col items-center gap-8'>
 					<div className='flex flex-row items-center gap-4'>
 						<h2>OR Detailed Search:</h2>
-						<button className='btn btn-xs' onClick={() => setDetailed(!detailed)}>
+						<button className='btn btn-xs' onClick={showSimple}>
 							<img src={detailed ? '/caret-up-solid.svg' : '/caret-down-solid.svg'} width='10' height='10' />
 						</button>
 					</div>
@@ -85,7 +104,7 @@ function Search() {
 				) : data ? (
 					<>
 						<h2 className='pt-6'>Search Results</h2>
-						<div className='flex flex-row flex-wrap gap-6 max-w-[500px] items-center justify-evenly py-8'>
+						<div className='flex flex-row flex-wrap gap-4 max-w-[1200px] items-center justify-evenly py-8'>
 							{data.map((item) => {
 								return (
 									<button

@@ -22,9 +22,9 @@ export default async (req) => {
         + `${hex_logic ? `&hex_logic=${hex_logic}` : ''}`
     console.log(fullURL)
 
-    if (type === 'palettes' || type === 'patterns') {
-        fullURL = `https://www.colourlovers.com/api/${type}/random?format=json`
-    }
+    // if (type === 'palettes' || type === 'patterns') {
+    //     fullURL = `https://www.colourlovers.com/api/${type}/random?format=json`
+    // }
     
     try {
         const res = await fetch(fullURL)
